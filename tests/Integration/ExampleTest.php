@@ -1,4 +1,5 @@
 <?php
+namespace Tests\Integration;
 
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
