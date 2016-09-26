@@ -169,6 +169,8 @@ return [
         LaravelDoctrine\ORM\DoctrineServiceProvider::class,
         LaravelDoctrine\Extensions\GedmoExtensionsServiceProvider::class,
         LaravelDoctrine\Extensions\BeberleiExtensionsServiceProvider::class,
+        LaravelBA\RouteBinder\RouteBinderServiceProvider::class,
+        Digbang\Backoffice\BackofficeServiceProvider::class,
 
         /*
          * Application Service Providers...
