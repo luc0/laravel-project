@@ -22,6 +22,12 @@
         "symfony/css-selector": "3.1.*",
         "symfony/dom-crawler": "3.1.*"
     },
+    "suggest": {
+        "intervention/image":        "PHP image handling and manipulation library.",
+        "cviebrock/image-validator": "Extra Laravel validation rules for dealing with images.",
+        "dingo/api":                 "API development.",
+        "omnipay/omnipay":           "Payment gateway abstraction."
+    },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -29,9 +35,9 @@
         }
     },
     "autoload-dev": {
-        "classmap": [
-            "tests/TestCase.php"
-        ]
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
     },
     "scripts": {
         "post-root-package-install": [
@@ -46,6 +52,16 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
+            "php artisan optimize"
+        ],
+        "build": [
+            "npm install",
+            "gulp --production",
+            "php artisan clear-compiled",
+            "php artisan vendor:publish --tag=\"assets\"",
+            "php artisan doctrine:clear-cache:metadata",
+            "php artisan doctrine:generate:proxies",
+            "php artisan doctrine:schema:update --force",
             "php artisan optimize"
         ]
     },
