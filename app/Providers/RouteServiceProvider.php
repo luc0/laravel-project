@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Route;
+use Illuminate\Contracts\Routing\Registrar;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Illuminate\Routing\Router;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -17,29 +18,27 @@ class RouteServiceProvider extends ServiceProvider
     protected $namespace = 'App\Http\Controllers';
 
     /**
-     * Define your route model bindings, pattern filters, etc.
+     * Define the routes for the application.
      *
-     * @return void
+     * @param Registrar $router
      */
-    public function boot()
+    public function map(Registrar $router)
     {
-        //
+        $this->mapApiRoutes($router);
 
-        parent::boot();
+        $this->mapWebRoutes($router);
+
+        //
     }
 
     /**
-     * Define the routes for the application.
+     * Define your route model bindings, pattern filters, etc.
      *
-     * @return void
+     * @param Router $router
      */
-    public function map()
+    public function bind(Router $router)
     {
-        $this->mapApiRoutes();
-
-        $this->mapWebRoutes();
-
-        //
+        // $router->bind('user_id', function () { /* ... */ });
     }
 
     /**
@@ -47,35 +46,46 @@ class RouteServiceProvider extends ServiceProvider
      *
      * These routes all receive session state, CSRF protection, etc.
      *
-     * @return void
+     * @param Registrar $router
      */
-    protected function mapWebRoutes()
+    protected function mapWebRoutes(Registrar $router)
     {
-        Route::middleware('web')
-             ->namespace($this->namespace)
-             ->group(function ($router) {
-                 Route::get('/', function () {
-                     return view('welcome');
-                 });
-             });
+        $router
+            ->middleware('web')
+            ->namespace($this->namespace)
+            ->group(function (Registrar $router) {
+                $router->get('/', function () {
+                    return view('welcome');
+                });
+            });
     }
 
     /**
      * Here is where you can register API routes for your application.
      * These routes are typically stateless.
      *
+     * @param Registrar $router
+     */
+    protected function mapApiRoutes(Registrar $router)
+    {
+        $router
+            ->prefix('api')
+            ->middleware('api')
+            ->namespace($this->namespace)
+            ->group(function (Registrar $router) {
+                $router->get('/user', function (Request $request) {
+                    return $request->user();
+                })->middleware('auth:api');
+            });
+    }
+
+    /**
      * @return void
      */
-    protected function mapApiRoutes()
+    public function boot()
     {
-        Route::prefix('api')
-             ->middleware('api')
-             ->namespace($this->namespace)
-             ->group(function ($router) {
-                 Route::get('/user', function (Request $request) {
-                     return $request->user();
-                 })->middleware('auth:api');
+        $this->app->call([$this, 'bind']);
 
-             });
+        parent::boot();
     }
 }
