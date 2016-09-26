@@ -60,8 +60,7 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "api" routes for the application.
-     *
+     * Here is where you can register API routes for your application.
      * These routes are typically stateless.
      *
      * @return void
@@ -73,7 +72,10 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace,
             'prefix' => 'api',
         ], function ($router) {
-            require base_path('routes/api.php');
+            Route::get('/user', function (Request $request) {
+                return $request->user();
+            })->middleware('auth:api');
+    
         });
     }
 }
