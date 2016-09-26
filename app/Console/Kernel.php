@@ -31,10 +31,17 @@ class Kernel extends ConsoleKernel
     /**
      * Register the Closure based commands for the application.
      *
+     * This is where you may define all of your Closure based console
+     * commands. Each Closure is bound to a command instance allowing a
+     * simple approach to interacting with each command's IO methods.
+     *
      * @return void
      */
     protected function commands()
     {
-        require base_path('routes/console.php');
+        $this->command('inspire', function () {
+            /** @var \Illuminate\Console\Command $this */
+            $this->comment(\Illuminate\Foundation\Inspiring::quote());
+        })->describe('Display an inspiring quote');
     }
 }
