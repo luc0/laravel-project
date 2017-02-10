@@ -3,6 +3,7 @@ namespace App\Console\Commands\Backoffice;
 
 use Digbang\Security\Contracts\SecurityApi;
 use Digbang\Security\Permissions\Permissible;
+use Doctrine\ORM\EntityNotFoundException;
 
 class UserPermissionAddCommand extends AddPermissionCommand
 {
@@ -38,19 +39,17 @@ class UserPermissionAddCommand extends AddPermissionCommand
      * @param string      $message
      *
      * @return void
+     * @throws \OutOfBoundsException
+     * @throws \Doctrine\ORM\EntityNotFoundException
      */
     protected function assertUser($user, $message)
     {
         if (!$user) {
-            $this->error($message);
-
-            exit(1);
+            throw new EntityNotFoundException($message, 1);
         }
 
         if (!$user instanceof Permissible) {
-            $this->error('The configured User class needs to extend ' . Permissible::class . ' to use permissions.');
-
-            exit(2);
+            throw new \OutOfBoundsException('The configured User class needs to extend '.Permissible::class.' to use permissions.', 2);
         }
     }
 }

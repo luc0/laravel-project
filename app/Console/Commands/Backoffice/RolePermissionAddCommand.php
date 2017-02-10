@@ -3,6 +3,7 @@ namespace App\Console\Commands\Backoffice;
 
 use Digbang\Security\Contracts\SecurityApi;
 use Digbang\Security\Permissions\Permissible;
+use Doctrine\ORM\EntityNotFoundException;
 
 class RolePermissionAddCommand extends AddPermissionCommand
 {
@@ -35,22 +36,20 @@ class RolePermissionAddCommand extends AddPermissionCommand
 
     /**
      * @param object|null $role
-     * @param string      $message
+     * @param string $message
      *
      * @return void
+     * @throws \OutOfBoundsException
+     * @throws \Doctrine\ORM\EntityNotFoundException
      */
     private function assertRole($role, $message)
     {
         if (!$role) {
-            $this->error($message);
-
-            exit(1);
+            throw new EntityNotFoundException($message, 1);
         }
 
         if (!$role instanceof Permissible) {
-            $this->error('The configured Role class needs to extend ' . Permissible::class . ' to use permissions.');
-
-            exit(2);
+            throw new \OutOfBoundsException('The configured Role class needs to extend '.Permissible::class.' to use permissions.', 2);
         }
     }
 }
