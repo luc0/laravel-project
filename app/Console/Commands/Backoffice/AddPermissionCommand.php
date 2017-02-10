@@ -14,21 +14,31 @@ abstract class AddPermissionCommand extends Command
      *
      * @param SecurityContext $securityContext
      * @param EntityManager   $entityManager
+     *
+     * @return int
      */
     public function handle(SecurityContext $securityContext, EntityManager $entityManager)
     {
-        $security = $securityContext->getSecurity('backoffice');
+        try {
+            $security = $securityContext->getSecurity('backoffice');
 
-        $permissible = $this->getPermissible($security);
-        $permissions = $this->getPermissions($security);
+            $permissible = $this->getPermissible($security);
+            $permissions = $this->getPermissions($security);
 
-        foreach ($permissions as $permission) {
-            $permissible->addPermission($permission);
+            foreach ($permissions as $permission) {
+                $permissible->addPermission($permission);
 
-            $this->info("Permission [$permission] added.");
+                $this->info("Permission [$permission] added.");
+            }
+
+            $entityManager->flush($permissible);
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
+
+            return $e->getCode() !== 0 ? $e->getCode() : 1;
         }
 
-        $entityManager->flush($permissible);
+        return 0;
     }
 
     /**
