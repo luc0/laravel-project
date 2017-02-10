@@ -168,7 +168,7 @@ class UserController extends Controller
             /** @var User|Roleable $user */
             $roles = $user->getRoles();
 
-            /* @type \Doctrine\Common\Collections\Collection $roles */
+            /* @var \Doctrine\Common\Collections\Collection $roles */
             $data[trans('backoffice::auth.roles')] = implode(', ', $roles->map(function (Role $role) {
                 return $role->getName();
             })->toArray());
@@ -227,7 +227,7 @@ class UserController extends Controller
         if ($user instanceof Roleable) {
             $roles = $user->getRoles();
 
-            /* @type \Doctrine\Common\Collections\Collection $roles */
+            /* @var \Doctrine\Common\Collections\Collection $roles */
             $data['roles[]'] = $roles->map(function (Role $role) {
                 return $role->getRoleSlug();
             })->toArray();
@@ -369,7 +369,7 @@ class UserController extends Controller
         $options = [];
         $rolePermissions = [];
         foreach ($roles as $role) {
-            /* @type \Digbang\Security\Roles\Role $role */
+            /* @var \Digbang\Security\Roles\Role $role */
             $options[$role->getRoleSlug()] = $role->getName();
 
             $rolePermissions[$role->getRoleSlug()] = $role->getPermissions()->map(function (Permission $permission) {
