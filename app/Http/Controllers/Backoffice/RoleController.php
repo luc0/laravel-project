@@ -330,7 +330,7 @@ class RoleController extends Controller
         $listing->addValueExtractor('users', function (Role $role) {
             $users = [];
             foreach ($role->getUsers() as $user) {
-                /* @type User $user */
+                /* @var User $user */
                 $users[] = $user->getUsername();
             }
 
