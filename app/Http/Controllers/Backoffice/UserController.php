@@ -124,7 +124,7 @@ class UserController extends Controller
         try {
             /** @var User $user */
             $user = $this->security()->users()->create($input, function (User $user) use ($input) {
-                $this->addRoles($user, $input['roles']);
+                $this->addRoles($user, $input['roles'] ?? []);
             });
 
             if ($input['activated']) {
