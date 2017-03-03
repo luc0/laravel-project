@@ -22,7 +22,7 @@ trait ValidatesUsers
             'lastName'    => 'max:255',
             'activated'   => 'boolean',
             'email'       => 'required|email|max:255|unique:'.DefaultUser::class.',email.address',
-            'password'    => 'required_with:password_confirmation|confirmed|min:3',
+            'password'    => 'required|confirmed|min:3',
             'username'    => 'required|alpha|max:255|unique:'.DefaultUser::class.',username',
             'roles'       => 'array',
             'permissions' => 'array',

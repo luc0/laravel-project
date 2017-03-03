@@ -25,6 +25,7 @@ class UpdateUserRequest extends FormRequest
 
         $rules['email']    .= ','.$user->getUserId();
         $rules['username'] .= ','.$user->getUserId();
+        $rules['password'] = 'nullable|'.$rules['password'];
 
         return $rules;
     }
