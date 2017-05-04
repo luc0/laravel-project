@@ -63,7 +63,7 @@
         ],
         "build": [
             "npm install",
-            "gulp --production",
+            "npm run production",
             "php artisan clear-compiled",
             "php artisan vendor:publish --tag=\"assets\"",
             "php artisan doctrine:clear-cache:metadata",
