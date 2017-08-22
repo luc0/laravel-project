@@ -11,8 +11,8 @@ node {
 		}
 
 		stage('Test') {
-			sh 'docker-compose run --rm php ./vendor/bin/phpunit tests/Unit --coverage-clover build/logs/coverage-unit.xml'
-			sh 'docker-compose run --rm php ./vendor/bin/phpunit tests/Integration --coverage-clover build/logs/coverage-it.xml'
+			sh 'docker-compose run --rm php ./vendor/bin/phpunit --testsuite "Unit Tests" --coverage-clover build/logs/coverage-unit.xml'
+			sh 'docker-compose run --rm php ./vendor/bin/phpunit --testsuite "Feature Tests" --coverage-clover build/logs/coverage-it.xml'
 			sh 'docker-compose run --rm php ./vendor/bin/phpunit --coverage-clover build/logs/coverage.xml --log-junit build/logs/tests.xml'
 			sh 'sonar-scanner'
 		}
